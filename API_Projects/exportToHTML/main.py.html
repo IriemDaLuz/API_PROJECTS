@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>main.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">requests</span>
+<span class="s0">from </span><span class="s1">dataclass_wizard </span><span class="s0">import </span><span class="s1">fromdict</span>
+<span class="s0">from </span><span class="s1">models</span><span class="s2">.</span><span class="s1">api_response </span><span class="s0">import </span><span class="s1">APIResponse</span>
+<span class="s0">from </span><span class="s1">interfaz </span><span class="s0">import </span><span class="s1">cargarProducto</span>
+
+<span class="s0">def </span><span class="s1">main</span><span class="s2">():</span>
+    <span class="s1">response </span><span class="s2">= </span><span class="s1">requests</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">'https://dummyjson.com/products'</span><span class="s2">)</span>
+    <span class="s1">data_dict </span><span class="s2">= </span><span class="s1">response</span><span class="s2">.</span><span class="s1">json</span><span class="s2">()</span>
+    <span class="s1">product_list </span><span class="s2">= </span><span class="s1">fromdict</span><span class="s2">(</span><span class="s1">APIResponse</span><span class="s2">, </span><span class="s1">data_dict</span><span class="s2">)</span>
+    <span class="s1">cargarProducto</span><span class="s2">(</span><span class="s1">product_list</span><span class="s2">)</span>
+
+<span class="s0">if </span><span class="s1">__name__ </span><span class="s2">== </span><span class="s3">&quot;__main__&quot;</span><span class="s2">:</span>
+    <span class="s1">main</span><span class="s2">()</span>
+</pre>
+</body>
+</html>

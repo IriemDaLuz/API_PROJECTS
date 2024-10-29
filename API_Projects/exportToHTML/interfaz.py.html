@@ -1,0 +1,214 @@
+<html>
+<head>
+<title>interfaz.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+.s5 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+interfaz.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">tkinter </span><span class="s0">as </span><span class="s1">tk</span>
+<span class="s0">from </span><span class="s1">tkinter </span><span class="s0">import </span><span class="s1">messagebox </span><span class="s0">as </span><span class="s1">alert</span><span class="s2">, </span><span class="s1">ttk</span>
+
+<span class="s0">import </span><span class="s1">requests</span>
+<span class="s0">from </span><span class="s1">PIL </span><span class="s0">import </span><span class="s1">ImageTk</span>
+<span class="s0">from </span><span class="s1">PIL </span><span class="s0">import </span><span class="s1">Image</span>
+<span class="s0">from </span><span class="s1">weasyprint </span><span class="s0">import </span><span class="s1">HTML</span>
+<span class="s0">import </span><span class="s1">io</span>
+
+
+<span class="s0">class </span><span class="s1">ProductoApp</span><span class="s2">:</span>
+    <span class="s0">def </span><span class="s1">__init__</span><span class="s2">(</span><span class="s1">self</span><span class="s2">, </span><span class="s1">listaDeProductos</span><span class="s2">):</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">productos </span><span class="s2">= </span><span class="s1">listaDeProductos</span><span class="s2">.</span><span class="s1">products</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">index </span><span class="s2">= </span><span class="s3">0</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">root </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Tk</span><span class="s2">()</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">root</span><span class="s2">.</span><span class="s1">title</span><span class="s2">(</span><span class="s4">&quot;Product List&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">root</span><span class="s2">.</span><span class="s1">configure</span><span class="s2">(</span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+
+        <span class="s5"># Frame principal</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">frame </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Frame</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">root</span><span class="s2">, </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">, </span><span class="s1">padx</span><span class="s2">=</span><span class="s3">20</span><span class="s2">, </span><span class="s1">pady</span><span class="s2">=</span><span class="s3">20</span><span class="s2">, </span><span class="s1">width</span><span class="s2">=</span><span class="s3">650</span><span class="s2">, </span><span class="s1">height</span><span class="s2">=</span><span class="s3">900</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">.</span><span class="s1">pack</span><span class="s2">()</span>
+
+        <span class="s5"># Entrada de búsqueda</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">productoBuscado </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Entry</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">14</span><span class="s2">), </span><span class="s1">width</span><span class="s2">=</span><span class="s3">30</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">productoBuscado</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">0</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">0</span><span class="s2">, </span><span class="s1">padx</span><span class="s2">=</span><span class="s3">10</span><span class="s2">, </span><span class="s1">pady</span><span class="s2">=</span><span class="s3">10</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;ew&quot;</span><span class="s2">)</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">botonBusqueda </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Button</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">text</span><span class="s2">=</span><span class="s4">&quot;Buscar&quot;</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">command</span><span class="s2">=</span><span class="s1">self</span><span class="s2">.</span><span class="s1">buscar_producto</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">botonBusqueda</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">0</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">padx</span><span class="s2">=</span><span class="s3">10</span><span class="s2">, </span><span class="s1">pady</span><span class="s2">=</span><span class="s3">10</span><span class="s2">)</span>
+
+        <span class="s5"># Título del producto</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">tituloProducto </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">20</span><span class="s2">, </span><span class="s4">&quot;bold&quot;</span><span class="s2">), </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">tituloProducto</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">1</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">0</span><span class="s2">, </span><span class="s1">columnspan</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+
+        <span class="s5"># Placeholder para imagen</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">img_label </span><span class="s2">= </span><span class="s1">ttk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">background</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">img_label</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">0</span><span class="s2">, </span><span class="s1">columnspan</span><span class="s2">=</span><span class="s3">2</span><span class="s2">)</span>
+
+        <span class="s5"># Información del producto</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">categoriaProducto </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">fg</span><span class="s2">=</span><span class="s4">&quot;orange&quot;</span><span class="s2">, </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">categoriaProducto</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">descripcionProducto </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">wraplength</span><span class="s2">=</span><span class="s3">400</span><span class="s2">, </span><span class="s1">justify</span><span class="s2">=</span><span class="s4">&quot;left&quot;</span><span class="s2">,</span>
+                                            <span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">descripcionProducto</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">3</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">stockProducto </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">stockProducto</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">4</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">ratingProducto </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">ratingProducto</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">5</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">precioProducto </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">18</span><span class="s2">, </span><span class="s4">&quot;bold&quot;</span><span class="s2">), </span><span class="s1">fg</span><span class="s2">=</span><span class="s4">&quot;red&quot;</span><span class="s2">, </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">precioProducto</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">6</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">reviewProducto </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">reviewProducto</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">7</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+
+        <span class="s5"># Botones de navegación</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">btnAnterior </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Button</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">text</span><span class="s2">=</span><span class="s4">&quot;Anterior&quot;</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">,</span>
+                                     <span class="s1">command</span><span class="s2">=</span><span class="s1">self</span><span class="s2">.</span><span class="s1">anterior_producto</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">btnAnterior</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">8</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">0</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;n&quot;</span><span class="s2">)</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">indiceActual </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">indiceActual</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">8</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">1</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;n&quot;</span><span class="s2">)</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">btnSiguiente </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Button</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">frame</span><span class="s2">, </span><span class="s1">text</span><span class="s2">=</span><span class="s4">&quot;Siguiente&quot;</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">,</span>
+                                      <span class="s1">command</span><span class="s2">=</span><span class="s1">self</span><span class="s2">.</span><span class="s1">siguiente_producto</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">btnSiguiente</span><span class="s2">.</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s3">8</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;n&quot;</span><span class="s2">)</span>
+
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">mostrar_producto</span><span class="s2">()</span>
+
+    <span class="s0">def </span><span class="s1">mostrar_producto</span><span class="s2">(</span><span class="s1">self</span><span class="s2">, </span><span class="s1">img_tk</span><span class="s2">=</span><span class="s0">None</span><span class="s2">):</span>
+        <span class="s1">product </span><span class="s2">= </span><span class="s1">self</span><span class="s2">.</span><span class="s1">productos</span><span class="s2">[</span><span class="s1">self</span><span class="s2">.</span><span class="s1">index</span><span class="s2">]</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">tituloProducto</span><span class="s2">.</span><span class="s1">config</span><span class="s2">(</span><span class="s1">text</span><span class="s2">=</span><span class="s1">product</span><span class="s2">.</span><span class="s1">title</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">categoriaProducto</span><span class="s2">.</span><span class="s1">config</span><span class="s2">(</span><span class="s1">text</span><span class="s2">=</span><span class="s4">f&quot;Categoría: </span><span class="s0">{</span><span class="s1">product</span><span class="s2">.</span><span class="s1">category</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">descripcionProducto</span><span class="s2">.</span><span class="s1">config</span><span class="s2">(</span><span class="s1">text</span><span class="s2">=</span><span class="s1">product</span><span class="s2">.</span><span class="s1">description</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">stockProducto</span><span class="s2">.</span><span class="s1">config</span><span class="s2">(</span><span class="s1">text</span><span class="s2">=</span><span class="s4">f&quot;Stock: </span><span class="s0">{</span><span class="s1">product</span><span class="s2">.</span><span class="s1">stock</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">precioProducto</span><span class="s2">.</span><span class="s1">config</span><span class="s2">(</span><span class="s1">text</span><span class="s2">=</span><span class="s4">f&quot;$</span><span class="s0">{</span><span class="s1">product</span><span class="s2">.</span><span class="s1">price</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">indiceActual</span><span class="s2">.</span><span class="s1">config</span><span class="s2">(</span><span class="s1">text</span><span class="s2">=</span><span class="s4">f&quot;</span><span class="s0">{</span><span class="s1">self</span><span class="s2">.</span><span class="s1">index </span><span class="s2">+ </span><span class="s3">1</span><span class="s0">}</span><span class="s4">/</span><span class="s0">{</span><span class="s1">len</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">productos</span><span class="s2">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">ratingProducto</span><span class="s2">.</span><span class="s1">config</span><span class="s2">(</span><span class="s1">text</span><span class="s2">=</span><span class="s4">f&quot;Calificación: </span><span class="s0">{</span><span class="s1">product</span><span class="s2">.</span><span class="s1">rating</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s2">)</span>
+
+        <span class="s1">r </span><span class="s2">= </span><span class="s1">requests</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">product</span><span class="s2">.</span><span class="s1">thumbnail</span><span class="s2">, </span><span class="s1">stream</span><span class="s2">=</span><span class="s0">True</span><span class="s2">)</span>
+        <span class="s1">img_data </span><span class="s2">= </span><span class="s1">r</span><span class="s2">.</span><span class="s1">content</span>
+        <span class="s1">img </span><span class="s2">= </span><span class="s1">Image</span><span class="s2">.</span><span class="s1">open</span><span class="s2">(</span><span class="s1">io</span><span class="s2">.</span><span class="s1">BytesIO</span><span class="s2">(</span><span class="s1">img_data</span><span class="s2">))</span>
+        <span class="s1">img</span><span class="s2">.</span><span class="s1">thumbnail</span><span class="s2">((</span><span class="s3">150</span><span class="s2">, </span><span class="s3">150</span><span class="s2">))</span>
+
+        <span class="s1">img_tk </span><span class="s2">= </span><span class="s1">ImageTk</span><span class="s2">.</span><span class="s1">PhotoImage</span><span class="s2">(</span><span class="s1">img</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">img_label</span><span class="s2">.</span><span class="s1">config</span><span class="s2">(</span><span class="s1">image</span><span class="s2">=</span><span class="s1">img_tk</span><span class="s2">)</span>
+        <span class="s1">self</span><span class="s2">.</span><span class="s1">img_label</span><span class="s2">.</span><span class="s1">image </span><span class="s2">= </span><span class="s1">img_tk</span>
+
+    <span class="s0">def </span><span class="s1">siguiente_producto</span><span class="s2">(</span><span class="s1">self</span><span class="s2">):</span>
+        <span class="s0">if </span><span class="s1">self</span><span class="s2">.</span><span class="s1">index </span><span class="s2">&lt; </span><span class="s1">len</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">productos</span><span class="s2">) - </span><span class="s3">1</span><span class="s2">:</span>
+            <span class="s1">self</span><span class="s2">.</span><span class="s1">index </span><span class="s2">+= </span><span class="s3">1</span>
+            <span class="s1">self</span><span class="s2">.</span><span class="s1">mostrar_producto</span><span class="s2">()</span>
+
+    <span class="s0">def </span><span class="s1">anterior_producto</span><span class="s2">(</span><span class="s1">self</span><span class="s2">):</span>
+        <span class="s0">if </span><span class="s1">self</span><span class="s2">.</span><span class="s1">index </span><span class="s2">&gt; </span><span class="s3">0</span><span class="s2">:</span>
+            <span class="s1">self</span><span class="s2">.</span><span class="s1">index </span><span class="s2">-= </span><span class="s3">1</span>
+            <span class="s1">self</span><span class="s2">.</span><span class="s1">mostrar_producto</span><span class="s2">()</span>
+
+    <span class="s0">def </span><span class="s1">buscar_producto</span><span class="s2">(</span><span class="s1">self</span><span class="s2">):</span>
+        <span class="s1">busqueda </span><span class="s2">= </span><span class="s1">self</span><span class="s2">.</span><span class="s1">productoBuscado</span><span class="s2">.</span><span class="s1">get</span><span class="s2">().</span><span class="s1">lower</span><span class="s2">()</span>
+        <span class="s1">resultados </span><span class="s2">= [</span><span class="s1">producto </span><span class="s0">for </span><span class="s1">producto </span><span class="s0">in </span><span class="s1">self</span><span class="s2">.</span><span class="s1">productos </span><span class="s0">if</span>
+                      <span class="s1">busqueda </span><span class="s0">in </span><span class="s1">producto</span><span class="s2">.</span><span class="s1">title</span><span class="s2">.</span><span class="s1">lower</span><span class="s2">() </span><span class="s0">or</span>
+                      <span class="s1">busqueda </span><span class="s0">in </span><span class="s1">producto</span><span class="s2">.</span><span class="s1">description</span><span class="s2">.</span><span class="s1">lower</span><span class="s2">() </span><span class="s0">or</span>
+                      <span class="s1">busqueda </span><span class="s0">in </span><span class="s1">producto</span><span class="s2">.</span><span class="s1">category</span><span class="s2">.</span><span class="s1">lower</span><span class="s2">()]</span>
+
+        <span class="s0">if </span><span class="s1">resultados</span><span class="s2">:</span>
+            <span class="s1">self</span><span class="s2">.</span><span class="s1">mostrar_busqueda</span><span class="s2">(</span><span class="s1">resultados</span><span class="s2">)</span>
+        <span class="s0">else</span><span class="s2">:</span>
+            <span class="s1">alert</span><span class="s2">.</span><span class="s1">showerror</span><span class="s2">(</span><span class="s1">title</span><span class="s2">=</span><span class="s4">&quot;Error en la búsqueda&quot;</span><span class="s2">,</span>
+                            <span class="s1">message</span><span class="s2">=</span><span class="s4">&quot;No se ha encontrado ningún producto que coincida con la búsqueda. Por favor, intenta con otro término.&quot;</span><span class="s2">)</span>
+
+    <span class="s0">def </span><span class="s1">mostrar_busqueda</span><span class="s2">(</span><span class="s1">self</span><span class="s2">, </span><span class="s1">productos_encontrados</span><span class="s2">):</span>
+        <span class="s1">ventana_busqueda </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Toplevel</span><span class="s2">(</span><span class="s1">self</span><span class="s2">.</span><span class="s1">root</span><span class="s2">)</span>
+        <span class="s1">ventana_busqueda</span><span class="s2">.</span><span class="s1">title</span><span class="s2">(</span><span class="s4">&quot;Resultados de Búsqueda&quot;</span><span class="s2">)</span>
+        <span class="s1">ventana_busqueda</span><span class="s2">.</span><span class="s1">configure</span><span class="s2">(</span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">)</span>
+
+        <span class="s1">frame_busqueda </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Frame</span><span class="s2">(</span><span class="s1">ventana_busqueda</span><span class="s2">, </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">, </span><span class="s1">padx</span><span class="s2">=</span><span class="s3">20</span><span class="s2">, </span><span class="s1">pady</span><span class="s2">=</span><span class="s3">20</span><span class="s2">)</span>
+        <span class="s1">frame_busqueda</span><span class="s2">.</span><span class="s1">pack</span><span class="s2">()</span>
+
+        <span class="s0">for </span><span class="s1">idx</span><span class="s2">, </span><span class="s1">producto </span><span class="s0">in </span><span class="s1">enumerate</span><span class="s2">(</span><span class="s1">productos_encontrados</span><span class="s2">):</span>
+            <span class="s1">ttk</span><span class="s2">.</span><span class="s1">Separator</span><span class="s2">(</span>
+                <span class="s1">frame_busqueda</span><span class="s2">, </span><span class="s1">orient</span><span class="s2">=</span><span class="s1">tk</span><span class="s2">.</span><span class="s1">HORIZONTAL</span>
+            <span class="s2">).</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s1">idx</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">0</span><span class="s2">, </span><span class="s1">columnspan</span><span class="s2">=</span><span class="s3">3</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;EW&quot;</span><span class="s2">)</span>
+
+            <span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">frame_busqueda</span><span class="s2">, </span><span class="s1">text</span><span class="s2">=</span><span class="s1">producto</span><span class="s2">.</span><span class="s1">title</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">12</span><span class="s2">), </span><span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">).</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s1">idx</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">0</span><span class="s2">,</span>
+                                                                                                 <span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+            <span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">frame_busqueda</span><span class="s2">, </span><span class="s1">text</span><span class="s2">=</span><span class="s4">f&quot;Categoría: </span><span class="s0">{</span><span class="s1">producto</span><span class="s2">.</span><span class="s1">category</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">), </span><span class="s1">fg</span><span class="s2">=</span><span class="s4">&quot;orange&quot;</span><span class="s2">,</span>
+                     <span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">).</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s1">idx</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">2</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+            <span class="s1">tk</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">(</span><span class="s1">frame_busqueda</span><span class="s2">, </span><span class="s1">text</span><span class="s2">=</span><span class="s4">f&quot;$</span><span class="s0">{</span><span class="s1">producto</span><span class="s2">.</span><span class="s1">price</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s2">, </span><span class="s1">font</span><span class="s2">=(</span><span class="s4">&quot;Arial&quot;</span><span class="s2">, </span><span class="s3">10</span><span class="s2">, </span><span class="s4">&quot;bold&quot;</span><span class="s2">), </span><span class="s1">fg</span><span class="s2">=</span><span class="s4">&quot;red&quot;</span><span class="s2">,</span>
+                     <span class="s1">bg</span><span class="s2">=</span><span class="s4">&quot;#f0f0f0&quot;</span><span class="s2">).</span><span class="s1">grid</span><span class="s2">(</span><span class="s1">row</span><span class="s2">=</span><span class="s1">idx</span><span class="s2">, </span><span class="s1">column</span><span class="s2">=</span><span class="s3">3</span><span class="s2">, </span><span class="s1">sticky</span><span class="s2">=</span><span class="s4">&quot;w&quot;</span><span class="s2">)</span>
+
+        <span class="s1">boton_pdf </span><span class="s2">= </span><span class="s1">tk</span><span class="s2">.</span><span class="s1">Button</span><span class="s2">(</span><span class="s1">ventana_busqueda</span><span class="s2">, </span><span class="s1">text</span><span class="s2">=</span><span class="s4">&quot;Generar PDF&quot;</span><span class="s2">,</span>
+                              <span class="s1">command</span><span class="s2">=</span><span class="s0">lambda</span><span class="s2">: </span><span class="s1">self</span><span class="s2">.</span><span class="s1">generar_pdf</span><span class="s2">(</span><span class="s1">productos_encontrados</span><span class="s2">))</span>
+        <span class="s1">boton_pdf</span><span class="s2">.</span><span class="s1">pack</span><span class="s2">(</span><span class="s1">pady</span><span class="s2">=</span><span class="s3">10</span><span class="s2">)</span>
+
+    <span class="s0">def </span><span class="s1">generar_pdf</span><span class="s2">(</span><span class="s1">self</span><span class="s2">, </span><span class="s1">productos_encontrados</span><span class="s2">):</span>
+        <span class="s1">html_content </span><span class="s2">= </span><span class="s4">&quot;&quot;&quot; 
+        &lt;html&gt; 
+        &lt;head&gt; 
+            &lt;meta charset='UTF-8'&gt; 
+            &lt;title&gt;Lista de Productos&lt;/title&gt; 
+            &lt;style&gt; 
+                body { font-family: Arial, sans-serif; color: #333; } 
+                header { text-align: center; padding: 20px; background: #eee; } 
+                footer { text-align: center; padding: 10px; font-size: 0.8em; background: #eee; } 
+                h1 { color: #00000; } 
+                title { color: #00000; } 
+                .product { border: 1px solid #ddd; margin: 10px; padding: 10px; } 
+                .product img { max-width: 150px; height: auto; display: block; margin: 5px auto; } 
+                .category { color: #e67e22; font-weight: bold; } 
+                .price { color: #d9534f; font-size: 1.2em; } 
+                .description { margin-top: 10px; } 
+            &lt;/style&gt; 
+        &lt;/head&gt; 
+        &lt;body&gt; 
+            &lt;header&gt; 
+                &lt;h1&gt;Lista de Productos Encontrados&lt;/h1&gt; 
+            &lt;/header&gt; 
+            &lt;main&gt; 
+        &quot;&quot;&quot;</span>
+
+        <span class="s0">for </span><span class="s1">producto </span><span class="s0">in </span><span class="s1">productos_encontrados</span><span class="s2">:</span>
+            <span class="s1">html_content </span><span class="s2">+= </span><span class="s4">f&quot;&quot;&quot;</span>
+            <span class="s4">&lt;div class=&quot;product&quot;&gt;</span>
+                <span class="s4">&lt;h2&gt;</span><span class="s0">{</span><span class="s1">producto</span><span class="s2">.</span><span class="s1">title</span><span class="s0">}</span><span class="s4">&lt;/h2&gt;</span>
+                <span class="s4">&lt;</span><span class="s0">{</span><span class="s1">producto</span><span class="s2">.</span><span class="s1">title</span><span class="s0">}</span><span class="s4">&quot;&gt;</span>
+                <span class="s4">&lt;p class=&quot;category&quot;&gt;Categoría: </span><span class="s0">{</span><span class="s1">producto</span><span class="s2">.</span><span class="s1">category</span><span class="s0">}</span><span class="s4">&lt;/p&gt;</span>
+                <span class="s4">&lt;p class=&quot;price&quot;&gt;Precio: $</span><span class="s0">{</span><span class="s1">producto</span><span class="s2">.</span><span class="s1">price</span><span class="s0">}</span><span class="s4">&lt;/p&gt;</span>
+                <span class="s4">&lt;p class=&quot;description&quot;&gt;</span><span class="s0">{</span><span class="s1">producto</span><span class="s2">.</span><span class="s1">description</span><span class="s0">}</span><span class="s4">&lt;/p&gt;</span>
+            <span class="s4">&lt;/div&gt;</span>
+            <span class="s4">&quot;&quot;&quot;</span>
+
+        <span class="s1">html_content </span><span class="s2">+= </span><span class="s4">&quot;&quot;&quot; 
+            &lt;/main&gt; 
+            &lt;footer&gt; 
+                &lt;p&gt;Catálogo de Productos - Iriem Da Luz Galindo 2ºCFGS&lt;/p&gt; 
+            &lt;/footer&gt; 
+        &lt;/body&gt; 
+        &lt;/html&gt; 
+        &quot;&quot;&quot;</span>
+
+        <span class="s1">output_path </span><span class="s2">= </span><span class="s4">&quot;CatálogoBuscado.pdf&quot;</span>
+        <span class="s1">HTML</span><span class="s2">(</span><span class="s1">string</span><span class="s2">=</span><span class="s1">html_content</span><span class="s2">).</span><span class="s1">write_pdf</span><span class="s2">(</span><span class="s1">output_path</span><span class="s2">)</span>
+        <span class="s1">alert</span><span class="s2">.</span><span class="s1">showinfo</span><span class="s2">(</span><span class="s1">title</span><span class="s2">=</span><span class="s4">&quot;PDF generado&quot;</span><span class="s2">, </span><span class="s1">message</span><span class="s2">=</span><span class="s4">f&quot;PDF guardado en: </span><span class="s0">{</span><span class="s1">output_path</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s2">)</span>
+
+
+<span class="s0">def </span><span class="s1">cargarProducto</span><span class="s2">(</span><span class="s1">listaDeProductos</span><span class="s2">):</span>
+    <span class="s1">app </span><span class="s2">= </span><span class="s1">ProductoApp</span><span class="s2">(</span><span class="s1">listaDeProductos</span><span class="s2">)</span>
+    <span class="s1">app</span><span class="s2">.</span><span class="s1">root</span><span class="s2">.</span><span class="s1">mainloop</span><span class="s2">()</span>
+</pre>
+</body>
+</html>
